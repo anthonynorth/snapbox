@@ -15,7 +15,7 @@ get_static_map <- function(area,
                            retina = TRUE,
                            scale_ratio = 1) {
   stopifnot(inherits(area, c("sf", "sfc")))
-  style <- sub("mapbox://styles/", "", map_style)
+
   max_dim <- min(1280, round(1280 * scale_ratio))
 
   mercator_bbox <- get_mercator_bbox(area)
@@ -24,34 +24,9 @@ get_static_map <- function(area,
   width <- min(max_dim, round(max_dim * aspect_ratio))
   height <- min(max_dim, round(max_dim / aspect_ratio))
 
-  overlay <- mercator_bbox %>%
-    sf::st_as_sfc() %>%
-    sf::st_sf() %>%
-    sf::st_transform(4326) %>%
-    within(
-      {
-        `fill-opacity` <- 0L
-        `stroke-width` <- 0L
-      }
-    )
+  map_img <- get_map_image(mercator_bbox, map_style, width, height, retina, mapbox_api_access_token)
 
-  url <- paste(
-    sep = "/",
-    "https://api.mapbox.com/styles/v1",
-    style,
-    "static",
-    paste0("geojson(", geojsonsf::sf_geojson(overlay), ")"),
-    "auto",
-    paste0(width, "x", height, ifelse(retina, "@2x", "")),
-    paste0("?access_token=", mapbox_api_access_token)
-  )
-
-  response <- curl::curl_fetch_memory(url)
-  if(response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
-
-  img <- png::readPNG(response$content) * 255
-
-  tile <- raster::brick(img) %>%
+  tile <- raster::brick(map_img) %>%
     raster::setExtent(raster::extent(
       mercator_bbox$xmin,
       mercator_bbox$xmax,
@@ -64,8 +39,51 @@ get_static_map <- function(area,
   tile
 }
 
+get_map_overlay <- function(bbox) {
+  stopifnot(inherits(bbox, "bbox"))
+  bbox %>%
+    sf::st_as_sfc() %>%
+    sf::st_sf() %>%
+    sf::st_transform(4326) %>%
+    within(
+      {
+        `fill-opacity` <- 0L
+        `stroke-width` <- 0L
+      }
+    )
+}
+
+get_map_image <- function(bbox,
+                          map_style = "mapbox://styles/mapbox/dark-v10",
+                          width,
+                          height,
+                          retina = TRUE,
+                          mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN")) {
+  overlay <- get_map_overlay(bbox)
+  url <- get_request_url(map_style, overlay, width, height, retina, mapbox_api_access_token)
+
+  response <- curl::curl_fetch_memory(url)
+  if(response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
+
+  png::readPNG(response$content)
+}
+
+get_request_url <- function(map_style, overlay, width, height, retina, mapbox_api_access_token) {
+  paste(
+    sep = "/",
+    "https://api.mapbox.com/styles/v1",
+    sub("mapbox://styles/", "", map_style),
+    "static",
+    paste0("geojson(", geojsonsf::sf_geojson(overlay), ")"),
+    "auto",
+    paste0(width, "x", height, ifelse(retina, "@2x", "")),
+    paste0("?access_token=", mapbox_api_access_token)
+  )
+}
+
 get_mercator_bbox <- function(area) {
   stopifnot(inherits(area, c("sf", "sfc")))
+
   area %>%
     sf::st_transform(3857) %>%
     sf::st_bbox()
