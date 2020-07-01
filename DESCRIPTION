@@ -13,9 +13,7 @@ RoxygenNote: 7.1.0
 Imports: 
     magrittr,
     curl,
-    dplyr,
     geojsonsf,
     png,
     raster,
-    sf,
-    sp
+    sf
