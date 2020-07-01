@@ -28,9 +28,11 @@ get_static_map <- function(area,
     sf::st_as_sfc() %>%
     sf::st_sf() %>%
     sf::st_transform(4326) %>%
-    dplyr::mutate(
-      `fill-opacity` = 0L,
-      `stroke-width` = 0L
+    within(
+      {
+        `fill-opacity` <- 0L
+        `stroke-width` <- 0L
+      }
     )
 
   url <- paste(
