@@ -45,7 +45,7 @@ get_static_map <- function(area,
   )
 
   response <- curl::curl_fetch_memory(url)
-  stopifnot(response$status_code == 200)
+  if(response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
 
   img <- png::readPNG(response$content) * 255
 
