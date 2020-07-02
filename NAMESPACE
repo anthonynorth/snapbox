@@ -2,4 +2,10 @@
 
 export("%>%")
 export(get_static_map)
+export(mapbox_dark)
+export(mapbox_light)
+export(mapbox_outdoors)
+export(mapbox_satellite)
+export(mapbox_satellite_streets)
+export(mapbox_streets)
 importFrom(magrittr,"%>%")
