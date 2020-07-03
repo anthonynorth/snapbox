@@ -17,3 +17,5 @@ Imports:
     png,
     raster,
     sf
+Suggests: 
+    testthat
