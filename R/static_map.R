@@ -1,20 +1,22 @@
-#' Get static map
+#' Get static Mapbox map as a georeferenced raster
 #'
 #' @name get_static_map
 #'
-#' @param area
-#' @param map_style
-#' @param mapbox_api_access_token
-#' @param retina
-#' @param scale_ratio
+#' @param area 
+#' @param map_style 
+#' @param mapbox_api_access_token 
+#' @param retina 
+#' @param scale_ratio 
 #' @param area_buffer a buffer to appear around the `area` geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.
+#' @param purge_cache forget cached api calls and responses before making api call if TRUE.
 #' @export
 get_static_map <- function(area,
                            map_style = "mapbox://styles/mapbox/dark-v10",
                            mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
                            retina = TRUE,
                            scale_ratio = 1,
-                           area_buffer = 0) {
+                           area_buffer = 0,
+                           purge_cache = FALSE) {
   stopifnot(inherits(area, c("sf", "sfc")))
 
   max_dim <- min(1280, round(1280 * scale_ratio))
@@ -25,7 +27,12 @@ get_static_map <- function(area,
   width <- min(max_dim, round(max_dim * aspect_ratio))
   height <- min(max_dim, round(max_dim / aspect_ratio))
 
-  map_img <- get_map_image(mercator_bbox, map_style, width, height, retina, mapbox_api_access_token)
+  map_img <- get_map_image(mercator_bbox,
+                           map_style,
+                           width, height,
+                           retina,
+                           mapbox_api_access_token,
+                           purge_cache)
 
   tile <- raster::brick(map_img) %>%
     raster::setExtent(raster::extent(
@@ -59,15 +66,19 @@ get_map_image <- function(bbox,
                           width,
                           height,
                           retina = TRUE,
-                          mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN")) {
+                          mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
+                          purge_cache = FALSE) {
   overlay <- get_map_overlay(bbox)
   url <- get_request_url(map_style, overlay, width, height, retina, mapbox_api_access_token)
 
-  response <- curl::curl_fetch_memory(url)
+  if(purge_cache) forget(api_query) ## reset memoisation
+  response <- api_query(url)
   if(response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
 
   png::readPNG(response$content)
 }
+
+api_query <- memoise::memoise(curl::curl_fetch_memory)
 
 get_request_url <- function(map_style, overlay, width, height, retina, mapbox_api_access_token) {
   paste(
