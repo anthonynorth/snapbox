@@ -7,18 +7,19 @@
 #' @param mapbox_api_access_token
 #' @param retina
 #' @param scale_ratio
-#'
+#' @param area_buffer a buffer to appear around the `area` geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.
 #' @export
 get_static_map <- function(area,
                            map_style = "mapbox://styles/mapbox/dark-v10",
                            mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
                            retina = TRUE,
-                           scale_ratio = 1) {
+                           scale_ratio = 1,
+                           area_buffer = 0) {
   stopifnot(inherits(area, c("sf", "sfc")))
 
   max_dim <- min(1280, round(1280 * scale_ratio))
 
-  mercator_bbox <- get_mercator_bbox(area)
+  mercator_bbox <- get_mercator_bbox(area, area_buffer)
   aspect_ratio <- get_aspect_ratio(mercator_bbox)
 
   width <- min(max_dim, round(max_dim * aspect_ratio))
@@ -81,12 +82,18 @@ get_request_url <- function(map_style, overlay, width, height, retina, mapbox_ap
   )
 }
 
-get_mercator_bbox <- function(area) {
+get_mercator_bbox <- function(area, area_buffer = 0) {
   stopifnot(inherits(area, c("sf", "sfc")))
 
-  area %>%
-    sf::st_transform(3857) %>%
-    sf::st_bbox()
+ buffered_area <- 
+   area %>%
+   sf::st_transform(3857) %>%
+   sf::st_buffer(area_buffer)
+
+ if(as.numeric(sf::st_area(buffered_area)) == 0) stop("Bounding box of supplied geometry has 0 area, so cannot be used as a map viewport. Try setting 'buffer' argument.")
+
+  sf::st_bbox(buffered_area)
+
 }
 
 get_aspect_ratio <- function(bbox) {
