@@ -10,16 +10,15 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: 
-    magrittr,
+Imports:
     curl,
-    geojsonsf,
+    magrittr,
+    memoise,
     png,
     raster,
     sf,
-    stylebox (>= 0.1.0),
-    memoise
-Suggests: 
+    stylebox (>= 0.1.0)
+Suggests:
     testthat
-Remotes: 
+Remotes:
     anthonynorth/stylebox

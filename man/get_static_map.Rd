@@ -6,7 +6,7 @@
 \usage{
 get_static_map(
   area,
-  map_style = "mapbox://styles/mapbox/dark-v10",
+  map_style = mapbox_dark(),
   mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
   retina = TRUE,
   scale_ratio = 1,
@@ -15,15 +15,15 @@ get_static_map(
 )
 }
 \arguments{
-\item{area}{}
+\item{area}{The map area}
 
-\item{map_style}{}
+\item{map_style}{A Mapbox style, see \code{stylebox::mapbox_styles}}
 
-\item{mapbox_api_access_token}{}
+\item{mapbox_api_access_token}{Mapbox api access token}
 
-\item{retina}{}
+\item{retina}{Render the map at 2x scale}
 
-\item{scale_ratio}{}
+\item{scale_ratio}{Ratio to scale the output image; \code{scale_ratio = 1} will give the largest image and smallest zoom.}
 
 \item{area_buffer}{a buffer to appear around the \code{area} geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.}
 
