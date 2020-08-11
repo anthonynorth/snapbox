@@ -17,6 +17,9 @@ Imports:
     png,
     raster,
     sf,
+    stylebox (>= 0.1.0),
     memoise
 Suggests: 
     testthat
+Remotes: 
+    anthonynorth/stylebox

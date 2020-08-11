@@ -2,19 +2,33 @@
 % Please edit documentation in R/static_map.R
 \name{get_static_map}
 \alias{get_static_map}
-\title{Get static map}
+\title{Get static Mapbox map as a georeferenced raster}
 \usage{
 get_static_map(
   area,
   map_style = "mapbox://styles/mapbox/dark-v10",
   mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
   retina = TRUE,
-  scale_ratio = 1
+  scale_ratio = 1,
+  area_buffer = 0,
+  purge_cache = FALSE
 )
 }
 \arguments{
+\item{area}{}
+
+\item{map_style}{}
+
+\item{mapbox_api_access_token}{}
+
+\item{retina}{}
+
 \item{scale_ratio}{}
+
+\item{area_buffer}{a buffer to appear around the \code{area} geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.}
+
+\item{purge_cache}{forget cached api calls and responses before making api call if TRUE.}
 }
 \description{
-Get static map
+Get static Mapbox map as a georeferenced raster
 }
