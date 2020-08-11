@@ -33,7 +33,7 @@ get_map_image <- function(bbox,
     mapbox_api_access_token
   )
 
-  if (purge_cache) forget(api_query) # reset memoisation
+  if (purge_cache) memoise::forget(api_query) # reset memoisation
   response <- api_query(url)
   if (response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
 
