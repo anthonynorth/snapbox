@@ -38,7 +38,12 @@ get_map_image <- function(bbox,
   response <- api_query(url)
   if (response$status_code != 200) stop("The remote server returned status code ", response$status_code, " in response to the image request.")
 
-  png::readPNG(response$content)
+  switch(
+    response$type,
+    "image/png" = png::readPNG(response$content),
+    "image/jpeg" = jpeg::readJPEG(response$content),
+    stop("Unknown content type", response$type)
+  )
 }
 
 #' Get request url
