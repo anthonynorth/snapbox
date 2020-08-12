@@ -29,12 +29,13 @@ get_static_map <- function(area,
   height <- min(max_dim, round(max_dim / aspect_ratio))
 
   map_img <- get_map_image(
-    mercator_bbox,
-    map_style,
-    width, height,
-    retina,
-    mapbox_api_access_token,
-    purge_cache
+    bbox = mercator_bbox,
+    map_style = map_style,
+    width = width,
+    height = height,
+    retina = retina,
+    mapbox_api_access_token = mapbox_api_access_token,
+    purge_cache = purge_cache
   )
 
   tile <- raster::brick(map_img) %>%
