@@ -22,3 +22,18 @@
 ```r
 remotes::install_github("anthonynorth/snapbox")
 ```
+
+## Usage
+```r
+library(sf)
+library(ggplot2)
+library(snapbox)
+
+area <- st_bbox(
+  c(xmin = 147, ymin = -43, xmax = 147.7, ymax = -42.65),
+  crs = 4326
+)
+
+ggplot() +
+  layer_mapbox(area, scale_ratio = 0.5)
+```
