@@ -2,6 +2,7 @@
 
 export("%>%")
 export(get_static_map)
+export(layer_mapbox)
 export(mapbox_dark)
 export(mapbox_gallery_blueprint)
 export(mapbox_gallery_cali_terrain)
