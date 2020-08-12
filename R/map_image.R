@@ -5,13 +5,13 @@ api_query <- memoise::memoise(curl::curl_fetch_memory)
 #' Get map image
 #'
 #' @name get_map_image
-#' @param bbox
-#' @param map_style
-#' @param width
-#' @param height
-#' @param retina
-#' @param mapbox_api_access_token
-#' @param purge_cache
+#' @param bbox bbox of the map
+#' @param map_style mapbox style, see `stylebox::mapbox_styles`
+#' @param width output width
+#' @param height output height
+#' @param retina render the map at 2x scale if `TRUE`
+#' @param mapbox_api_access_token mapbox api access token
+#' @param purge_cache forget cached api calls and responses before making api call if `TRUE`.
 #'
 #' @noRd
 get_map_image <- function(bbox,
@@ -23,6 +23,7 @@ get_map_image <- function(bbox,
                           purge_cache = FALSE) {
   zoom <- get_map_zoom(bbox, width, height)
   centre <- get_map_centre(bbox)
+
   url <- get_request_url(
     map_style,
     centre,

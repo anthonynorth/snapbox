@@ -1,18 +1,14 @@
+#' Get static map
+#'
 #' Get static Mapbox map as a georeferenced raster
-#'
 #' @name get_static_map
-#'
-#' @param area
-#' The map area
-#' @param map_style
-#' A Mapbox style, see `stylebox::mapbox_styles`
-#' @param mapbox_api_access_token
-#' Mapbox api access token
-#' @param retina
-#' Render the map at 2x scale
-#' @param scale_ratio
-#' Ratio to scale the output image; `scale_ratio = 1` will give the largest image and smallest zoom.
-#' @param area_buffer a buffer to appear around the `area` geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.
+#' @param area the map area
+#' @param map_style mapbox style, see `stylebox::mapbox_styles`
+#' @param mapbox_api_access_token mapbox api access token
+#' @param retina render the map at 2x scale if `TRUE`
+#' @param scale_ratio ratio to scale the output image; `scale_ratio = 1` will give the largest image and smallest zoom.
+#' @param area_buffer a buffer to appear around the `area` geometry in meters (web mercator projection, EPSG 3857).
+#' Use this to create space around your data in the map visual.
 #' @param purge_cache forget cached api calls and responses before making api call if TRUE.
 #' @export
 get_static_map <- function(area,

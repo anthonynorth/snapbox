@@ -2,7 +2,7 @@
 % Please edit documentation in R/static_map.R
 \name{get_static_map}
 \alias{get_static_map}
-\title{Get static Mapbox map as a georeferenced raster}
+\title{Get static map}
 \usage{
 get_static_map(
   area,
@@ -15,17 +15,18 @@ get_static_map(
 )
 }
 \arguments{
-\item{area}{The map area}
+\item{area}{the map area}
 
-\item{map_style}{A Mapbox style, see \code{stylebox::mapbox_styles}}
+\item{map_style}{mapbox style, see \code{stylebox::mapbox_styles}}
 
-\item{mapbox_api_access_token}{Mapbox api access token}
+\item{mapbox_api_access_token}{mapbox api access token}
 
-\item{retina}{Render the map at 2x scale}
+\item{retina}{render the map at 2x scale if \code{TRUE}}
 
-\item{scale_ratio}{Ratio to scale the output image; \code{scale_ratio = 1} will give the largest image and smallest zoom.}
+\item{scale_ratio}{ratio to scale the output image; \code{scale_ratio = 1} will give the largest image and smallest zoom.}
 
-\item{area_buffer}{a buffer to appear around the \code{area} geometry in meters (web mercator projection, EPSG 3857). Use this to create space around your data in the map visual.}
+\item{area_buffer}{a buffer to appear around the \code{area} geometry in meters (web mercator projection, EPSG 3857).
+Use this to create space around your data in the map visual.}
 
 \item{purge_cache}{forget cached api calls and responses before making api call if TRUE.}
 }
