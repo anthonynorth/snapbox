@@ -1,9 +1,10 @@
 Package: snapbox
 Title: GGPlot Mapbox Basemap
-Version: 0.1.1
-Authors@R:
-    person(given = "Anthony", family = "North", role = c("aut", "cre"), email = "anthony.jl.north@gmail.com")
-    person(given = "Miles", family = "McBain", role = c("aut", "cre"), email = "miles.mcbain@gmail.com")
+Version: 0.1.1.9000
+Authors@R: c(
+        person(given = "Anthony", family = "North", role = c("aut", "cre"), email = "anthony.jl.north@gmail.com"),
+        person(given = "Miles", family = "McBain", role = c("aut"), email = "miles.mcbain@gmail.com")
+    )
 Description: Static mapbox basemap for ggplot2.
 License: MIT + file LICENSE
 URL: https://github.com/anthonynorth/snapbox
