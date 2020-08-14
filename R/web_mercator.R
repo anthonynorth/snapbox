@@ -7,7 +7,7 @@
 #' @param max_zoom
 #'
 #' @noRd
-get_map_zoom <- function(bbox, width, height, max_zoom = 24) {
+get_map_zoom <- function(bbox, width, height, max_zoom = 20) {
   points <- sf::st_sfc(
     sf::st_point(c(bbox$xmin, bbox$ymin)),
     sf::st_point(c(bbox$xmax, bbox$ymax)),
@@ -27,7 +27,9 @@ get_map_zoom <- function(bbox, width, height, max_zoom = 24) {
   scale_x <- width / size_x
   scale_y <- height / size_y
 
-  min(max_zoom, log2(abs(min(scale_x, scale_y))))
+  zoom <- log2(abs(min(scale_x, scale_y)))
+  # clamp zoom to [0, 20]
+  min(max(zoom, 0), 20)
 }
 
 #' Lng lat to world
