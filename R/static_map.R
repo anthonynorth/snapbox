@@ -9,6 +9,11 @@
 #' @param scale_ratio ratio to scale the output image; `scale_ratio = 1` will give the largest image and smallest zoom.
 #' @param area_buffer a buffer to appear around the `area` geometry in meters (web mercator projection, EPSG 3857).
 #' Use this to create space around your data in the map visual.
+#' @param mapbox_logo include mapbox logo on the image if TRUE
+#' @param attribution include attribution on the image if TRUE.
+#' You still have a legal responsibility to attribute maps that use OpenStreetMap data, which includes most maps from Mapbox.
+#' If you specify attribution=FALSE, you are legally required to include proper attribution elsewhere on the webpage or document.
+#' <https://docs.mapbox.com/api/maps/#static-images> and <https://docs.mapbox.com/help/how-mapbox-works/attribution/#static--print>
 #' @param purge_cache forget cached api calls and responses before making api call if TRUE.
 #' @export
 get_static_map <- function(area,
@@ -17,6 +22,8 @@ get_static_map <- function(area,
                            retina = TRUE,
                            scale_ratio = 1,
                            area_buffer = 0,
+                           mapbox_logo = TRUE,
+                           attribution = TRUE,
                            purge_cache = FALSE) {
   stopifnot(inherits(area, c("sf", "sfc", "bbox")))
 
@@ -34,6 +41,8 @@ get_static_map <- function(area,
     width = width,
     height = height,
     retina = retina,
+    mapbox_logo = mapbox_logo,
+    attribution = attribution,
     mapbox_api_access_token = mapbox_api_access_token,
     purge_cache = purge_cache
   )

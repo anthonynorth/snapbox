@@ -11,6 +11,8 @@ layer_mapbox <- function(area,
                          retina = TRUE,
                          scale_ratio = 1,
                          area_buffer = 0,
+                         mapbox_logo = TRUE,
+                         attribution = TRUE,
                          purge_cache = FALSE) {
   static_map <- get_static_map(
     area = area,
@@ -19,6 +21,8 @@ layer_mapbox <- function(area,
     retina = retina,
     scale_ratio = scale_ratio,
     area_buffer = area_buffer,
+    mapbox_logo = mapbox_logo,
+    attribution = attribution,
     purge_cache = purge_cache
   )
 

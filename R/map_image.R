@@ -2,36 +2,49 @@
 #' @noRd
 api_query <- memoise::memoise(curl::curl_fetch_memory)
 
+#' warn_once
+#' @noRd
+warn_once <- memoise::memoise(warning)
+
 #' Get map image
 #'
 #' @name get_map_image
 #' @param bbox bbox of the map
-#' @param map_style mapbox style, see `stylebox::mapbox_styles`
 #' @param width output width
 #' @param height output height
-#' @param retina render the map at 2x scale if `TRUE`
-#' @param mapbox_api_access_token mapbox api access token
-#' @param purge_cache forget cached api calls and responses before making api call if `TRUE`.
+#' @inheritParams get_static_map
 #'
 #' @noRd
 get_map_image <- function(bbox,
-                          map_style = mapbox_dark(),
+                          map_style,
                           width,
                           height,
-                          retina = TRUE,
-                          mapbox_api_access_token = Sys.getenv("MAPBOX_ACCESS_TOKEN"),
-                          purge_cache = FALSE) {
+                          retina,
+                          mapbox_logo,
+                          attribution,
+                          mapbox_api_access_token,
+                          purge_cache) {
+  if (!attribution) {
+    warn_once(
+      "You have a legal responsibility to attribute maps that use OpenStreetMap data, which includes most maps from Mapbox.
+    If you specify attribution = FALSE, you are legally required to include proper attribution elsewhere on the webpage or document.
+    See <https://docs.mapbox.com/help/how-mapbox-works/attribution/#static--print>"
+    )
+  }
+
   zoom <- get_map_zoom(bbox, width, height)
   centre <- get_map_centre(bbox)
 
   url <- get_request_url(
-    map_style,
-    centre,
-    zoom,
-    width,
-    height,
-    retina,
-    mapbox_api_access_token
+    map_style = map_style,
+    centre = centre,
+    zoom = zoom,
+    width = width,
+    height = height,
+    retina = retina,
+    mapbox_logo = mapbox_logo,
+    attribution = attribution,
+    mapbox_api_access_token = mapbox_api_access_token
   )
 
   if (purge_cache) memoise::forget(api_query) # reset memoisation
@@ -49,13 +62,9 @@ get_map_image <- function(bbox,
 #' Get request url
 #'
 #' @name get_request_url
-#' @param map_style
-#' @param centre
-#' @param zoom
-#' @param width
-#' @param height
-#' @param retina
-#' @param mapbox_api_access_token
+#' @param centre map centre point
+#' @param zoom map zoom level
+#' @inheritParams get_map_image
 #'
 #' @noRd
 get_request_url <- function(map_style,
@@ -64,14 +73,24 @@ get_request_url <- function(map_style,
                             width,
                             height,
                             retina,
+                            mapbox_logo,
+                            attribution,
                             mapbox_api_access_token) {
-  paste(
+  path <- paste(
     sep = "/",
     "https://api.mapbox.com/styles/v1",
     sub("mapbox://styles/", "", map_style),
     "static",
-    paste(sep = ",", centre[1], centre[2], zoom, 0),
-    paste0(width, "x", height, ifelse(retina, "@2x", "")),
-    paste0("?access_token=", mapbox_api_access_token)
+    paste(sep = ",", centre[1], centre[2], zoom),
+    paste0(width, "x", height, ifelse(retina, "@2x", ""))
   )
+
+  query_string <- paste(
+    sep = "&",
+    paste0("logo=", tolower(mapbox_logo)),
+    paste0("attribution=", tolower(attribution)),
+    paste0("access_token=", mapbox_api_access_token)
+  )
+
+  paste(sep = "?", path, query_string)
 }

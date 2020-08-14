@@ -11,6 +11,8 @@ get_static_map(
   retina = TRUE,
   scale_ratio = 1,
   area_buffer = 0,
+  mapbox_logo = TRUE,
+  attribution = TRUE,
   purge_cache = FALSE
 )
 }
@@ -27,6 +29,13 @@ get_static_map(
 
 \item{area_buffer}{a buffer to appear around the \code{area} geometry in meters (web mercator projection, EPSG 3857).
 Use this to create space around your data in the map visual.}
+
+\item{mapbox_logo}{include mapbox logo on the image if TRUE}
+
+\item{attribution}{include attribution on the image if TRUE.
+You still have a legal responsibility to attribute maps that use OpenStreetMap data, which includes most maps from Mapbox.
+If you specify attribution=FALSE, you are legally required to include proper attribution elsewhere on the webpage or document.
+\url{https://docs.mapbox.com/api/maps/#static-images} and \url{https://docs.mapbox.com/help/how-mapbox-works/attribution/#static--print}}
 
 \item{purge_cache}{forget cached api calls and responses before making api call if TRUE.}
 }
