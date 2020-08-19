@@ -1,6 +1,6 @@
 Package: snapbox
 Title: GGPlot Mapbox Basemap
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
         person(given = "Anthony", family = "North", role = c("aut", "cre"), email = "anthony.jl.north@gmail.com"),
         person(given = "Miles", family = "McBain", role = c("aut"), email = "miles.mcbain@gmail.com")
@@ -22,7 +22,9 @@ Imports:
     sf,
     stylebox (>= 0.1.0)
 Suggests:
-    testthat
+    testthat,
+    vdiffr,
+    ggplot2
 Remotes:
     anthonynorth/stylebox
 Encoding: UTF-8

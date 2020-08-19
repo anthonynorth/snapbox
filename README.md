@@ -9,6 +9,9 @@
   <a href="https://travis-ci.com/anthonynorth/snapbox">
     <img src="https://img.shields.io/travis/com/anthonynorth/snapbox?style=flat-square" alt="build">
   </a>
+  <a href="https://github.com/anthonynorth/snapbox/actions">
+    <img src="https://github.com/anthonynorth/snapbox/workflows/R-CMD-check/badge.svg", alt = "GitHub actions build status">
+  </a>
 </p>
 
 <h1 align="center">snapbox</h1>
