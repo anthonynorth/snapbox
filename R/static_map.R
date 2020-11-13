@@ -1,6 +1,6 @@
 #' Get static map
 #'
-#' Get static Mapbox map as a georeferenced raster
+#' Get static Mapbox map as a georeferenced {stars} raster
 #' @name get_static_map
 #' @param area the map area
 #' @param map_style mapbox style, see `stylebox::mapbox_styles`

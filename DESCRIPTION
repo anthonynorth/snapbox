@@ -18,9 +18,9 @@ Imports:
     magrittr,
     memoise,
     png,
-    raster,
     sf,
-    stylebox (>= 0.1.0)
+    stylebox (>= 0.1.0),
+    stars
 Suggests:
     testthat,
     vdiffr,
