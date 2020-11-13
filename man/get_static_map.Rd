@@ -40,5 +40,5 @@ If you specify attribution=FALSE, you are legally required to include proper att
 \item{purge_cache}{forget cached api calls and responses before making api call if TRUE.}
 }
 \description{
-Get static Mapbox map as a georeferenced raster
+Get static Mapbox map as a georeferenced {stars} raster
 }
