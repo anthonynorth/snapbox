@@ -47,15 +47,20 @@ get_static_map <- function(area,
     purge_cache = purge_cache
   )
 
-  tile <- raster::brick(map_img) %>%
-    raster::setExtent(raster::extent(
-      mercator_bbox$xmin,
-      mercator_bbox$xmax,
-      mercator_bbox$ymin,
-      mercator_bbox$ymax
-    ))
-
-  raster::crs(tile) <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+  tile <- as_stars_tile(map_img, mercator_bbox)
 
   tile
+
+}
+
+as_stars_tile <- function(map_img, map_img_bbox) {
+  stars_img_transposed <-
+    stars::st_as_stars(.x = aperm(map_img, c(2, 1, 3))[, nrow(map_img):1, ])
+  img_bbox <-
+    sf::st_bbox(map_img_bbox[c("xmin", "xmax", "ymin", "ymax")],
+    crs = 3857
+  )
+  stars_tile <- stars::st_set_bbox(stars_img_transposed, img_bbox)
+  names(attr(stars_tile, "dimensions"))[3] <- "band"
+  stars_tile
 }
