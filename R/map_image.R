@@ -1,7 +1,8 @@
 #' memoised curl fetch
+#' 
 #' @noRd
-#' @importFrom curl curl_fetch_memory
 #' Hack to make R CMD check happy since it doens't see curl_fetch_memory being used.
+#' @importFrom curl curl_fetch_memory
 api_query <- memoise::memoise(curl::curl_fetch_memory)
 
 #' warn_once
