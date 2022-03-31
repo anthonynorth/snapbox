@@ -57,14 +57,15 @@ get_aspect_ratio <- function(bbox) {
 
   as.numeric(abs(bbox$xmax - bbox$xmin) / abs(bbox$ymax - bbox$ymin))
 }
-##' is_zero
-##'
-##' using all.equal to allow for areas that are very very small to be considered
-##' as equal to zero.
-##'
-##' @name is_zero
-##' @param x the number to compare to 0
-##' @return {boolean}
-##'
-##' @nord
+
+#' is_zero
+#'
+#' using all.equal to allow for areas that are very very small to be considered
+#' as equal to zero.
+#'
+#' @name is_zero
+#' @param x the number to compare to 0
+#' @return {boolean}
+#'
+#' @noRd
 is_zero <- function(x) isTRUE(all.equal(0, unname(x)))

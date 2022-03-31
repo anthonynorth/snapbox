@@ -1,11 +1,10 @@
 #' Get map zoom
 #'
 #' @name get_map_zoom
-#' @param bbox
-#' @param width
-#' @param height
-#' @param max_zoom
+#' @inherit get_map_image
+#' @param max_zoom the max zoom
 #'
+#' @keywords internal
 #' @noRd
 get_map_zoom <- function(bbox, width, height, max_zoom = 20) {
   points <- sf::st_sfc(
@@ -36,11 +35,12 @@ get_map_zoom <- function(bbox, width, height, max_zoom = 20) {
 #'
 #' Compute web mercator world coordinates
 #' @name lng_lat_to_world
-#' @param lng
-#' @param lat
-#' @param tile_size
+#' @param lng point longitude
+#' @param lat point latitude
+#' @param tile_size tile size
 #' @seealso <https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas>
 #'
+#' @keywords internal
 #' @noRd
 lng_lat_to_world <- function(lng, lat, tile_size = 512) {
   rad <- function(deg) deg * pi / 180
@@ -57,8 +57,9 @@ lng_lat_to_world <- function(lng, lat, tile_size = 512) {
 #' Get map centre
 #'
 #' @name get_map_centre
-#' @param bbox
+#' @inherit get_map_zoom
 #'
+#' @keywords internal
 #' @noRd
 get_map_centre <- function(bbox) {
   sf::st_as_sfc(bbox) %>%
