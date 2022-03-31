@@ -1,6 +1,6 @@
 test_that("layer mapbox works", {
 
-  skip_on_travis()
+  skip_on_ci()
   skip_on_cran()
 
   ## test hobart can be fetched
@@ -21,7 +21,7 @@ test_that("layer mapbox works", {
   hobart_map2 <-
     ggplot2::ggplot() +
     layer_mapbox(area, scale_ratio = 0.5, mapbox_logo = FALSE, attribution = FALSE)
-  
+
   vdiffr::expect_doppelganger("mapbox dark with no logo or attribution", hobart_map2)
 
 })
